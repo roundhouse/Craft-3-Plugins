@@ -1,0 +1,113 @@
+.formbuilder.fb-entries {
+
+    .section-header {
+        display: none;
+    }
+
+    .sidebar {
+        box-shadow: none;
+        background: $c-offWhite;
+    }
+
+    .chart-explorer-container {
+        .chart-explorer {
+            background-color: $c-moss;
+        }
+
+        .total {
+            & > div {
+                display: inline;
+                font-family: 'Roboto';
+                font-size: 12px;
+                text-transform: uppercase;
+                color: $c-white !important;
+                & > span {
+                    padding-left: 8px;
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .grid-line .tick {
+            line {
+                stroke: darken($c-moss, 2) !important;
+            }
+        }
+
+        .tick {
+            text { 
+                stroke: none !important; 
+                fill: $c-white !important;
+            }
+        }
+
+        .axis path {
+            stroke: $c-moss !important;
+        }
+
+        .plots .plot {
+            fill: $c-success !important;
+        }
+
+        .chart-line path {
+            stroke: $c-success !important;
+        }
+
+        .chart-area path {
+            fill: $c-success !important;
+        }
+    }
+
+    #sources {
+        li {
+            position: relative;
+        }
+
+        .entry-count {
+            @include position(absolute, 50% 15px auto auto);
+            @include size(auto auto);
+            margin-top: -9px;
+            padding: 0 7px;
+            border-radius: 5px;
+            background-color: $c-info;
+            text-align: center;
+            font-weight: bold;
+            font-size: 9px;
+            letter-spacing: $letter-spacing;
+            color: $c-white;
+            @include antialias;
+        }
+    }
+
+    .elements {
+        [data-attribute="title"] {
+            text-align: left;
+        }
+        [data-title="Title"] {
+            text-align: left;
+        }
+    }
+}
+
+// Entry
+.formbuilder.fb-entry-edit {
+
+    .fieldset {
+        background: white;
+    }
+
+    .entry-field {
+        display: flex;
+        padding: 20px;
+        border-bottom: 1px solid $c-border;
+
+        .entry-label {
+            font-weight: 700;
+        }
+
+        .entry-value {
+            margin-left: auto;
+        }
+    }
+
+}

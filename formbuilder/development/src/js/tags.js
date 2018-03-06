@@ -1,0 +1,25 @@
+let Tag;
+
+Tag = Garnish.Base.extend({
+    $item: null,
+    $deleteTag: null,
+    init(item) {
+        this.$item = $(item);
+        this.$deleteTag = this.$item.find('.option-result-delete');
+        
+        return this.addListener(this.$deleteTag, 'click', 'delete');
+    },
+
+    "delete"(e) {
+        let self;
+        e.preventDefault();
+        self = this;
+        this.$item.addClass('zap');
+        setTimeout((() => {
+            self.$item.remove();
+            Craft.cp.displayNotice(Craft.t('form-builder', 'Item Removed'));
+        }), 300);
+    }
+});
+
+Garnish.$doc.ready(() => $('.result-item').each((i, el) => new Tag(el)));

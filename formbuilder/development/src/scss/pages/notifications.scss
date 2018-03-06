@@ -1,0 +1,14 @@
+.formbuilder.fb-edit-notification {
+
+    .delete-notification-meta, .save-notification-meta {
+        box-shadow: none;
+        border: none;
+        
+        .delete-notification, .save-notification {
+            display: block;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
+}
