@@ -1,0 +1,3 @@
+[submodule "formbuilder/release"]
+	path = formbuilder/release
+	url = git@github.com:roundhouse/Form-Builder-3.git
