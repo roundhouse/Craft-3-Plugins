@@ -1,7 +1,7 @@
 let mix = require('laravel-mix');
 
-const sourcePath = 'src';
-const distPath = '../release/src/assets';
+const sourcePath = 'development';
+const distPath = 'release/src/assets';
 
 mix.js(sourcePath + '/js/formbuilder.js', distPath + '/js/')
     .js(sourcePath + '/js/dashboard.js', distPath + '/js/')

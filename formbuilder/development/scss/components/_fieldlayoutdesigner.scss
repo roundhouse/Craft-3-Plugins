@@ -153,14 +153,6 @@
             .settings-button {
                 display: flex;
                 margin-left: auto;
-                // padding: 10px;
-
-                // border: 2px dashed rgba($c-gray, .4);
-                // border-radius: $border-radius;
-                // border-left: none;
-                // border-top-right-radius: $border-radius;
-                // border-bottom-right-radius: $border-radius;
-                // box-sizing: border-box;
             }
         }
 
@@ -228,10 +220,6 @@
             float: none !important;
             width: 31%;
             margin-right: 2.3333% !important;
-
-            // &:nth-child(3) {
-            //     margin-right: 0 !important;
-            // }
         }
 
         & > .fld-tab.fld-tab-caboose {
@@ -242,10 +230,6 @@
     }
 
     .unusedfields {
-        // display: flex;
-        // flex-wrap: wrap;
-        // justify-content: space-between;
-
         margin: 0 !important;
         padding: 25px;
         padding-top: 0;
