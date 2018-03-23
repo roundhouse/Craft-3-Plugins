@@ -1,3 +1,7 @@
+function isToggler(item) {
+    console.log(item)
+}
+
 var OptionModal;
 
 window.OptionModal = Garnish.Modal.extend({
@@ -6,9 +10,13 @@ window.OptionModal = Garnish.Modal.extend({
     $modalInputs: null,
     $redactor: null,
     $validationItems: [],
+    
     $togglerInput: null,
+    hasTogglers: false,
+
     errors: [],
     errorLength: 0,
+
     init: function(option) {
         var body, fields, self;
         self = this;
@@ -17,8 +25,22 @@ window.OptionModal = Garnish.Modal.extend({
         this.$form = $('<form class="modal fitted formbuilder-modal">').appendTo(Garnish.$bod);
         this.setContainer(this.$form);
         
-        body = $(['<header>', '<span class="modal-title">', option.$data.title, '</span>', '<div class="instructions">', option.$data.instructions, '</div>', '</header>', '<div class="body"></div>', '<footer class="footer">', '<div class="buttons">', '<input type="button" class="btns btn-modal cancel" value="' + Craft.t('form-builder', 'Cancel') + '">', '<input type="submit" class="btns btn-modal submit" value="' + Craft.t('form-builder', 'Save') + '">', '</div>', '</footer>'].join('')).appendTo(this.$form);
+        body = $([
+            '<header>', 
+                '<span class="modal-title">', option.$data.title, '</span>', 
+                '<div class="instructions">', option.$data.instructions, '</div>', 
+            '</header>', 
+            '<div class="body"></div>', 
+            '<footer class="footer">', 
+                '<div class="buttons">', 
+                    '<input type="button" class="btns btn-modal cancel" value="' + Craft.t('form-builder', 'Cancel') + '">', 
+                    '<input type="submit" class="btns btn-modal submit" value="' + Craft.t('form-builder', 'Save') + '">', 
+                '</div>', 
+            '</footer>'].join('')).appendTo(this.$form);
         
+        toggler = option.$inputs.some(function(elem) { return elem.toggler } )
+        this.hasTogglers = toggler
+
         $.each(option.$inputs, function(i, item) {
             var $input, camelClassName, className, required, validation;
             required = item.required ? 'data-required' : 'data-not-required';
@@ -72,30 +94,48 @@ window.OptionModal = Garnish.Modal.extend({
     },
 
     activateFieldToggle: function() {
-        var $toggler, item;
-        $toggler = this.$form.find('.input-hint');
+        let $toggler
+        let item
+
+        $toggler = this.$form.find('.toggle-btn')
 
         if (this.$togglerInput.value) {
-            item = this.$form.find('[data-selection-target="' + this.$togglerInput.value + '"]');
-            item.addClass('active-field');
+            item = this.$form.find('[data-selection-target="' + this.$togglerInput.value + '"]')
+            item.parent().addClass('active-field')
+        } else {
+            $($toggler[0]).parent().addClass('active-field')
+            target = $($toggler[0]).data('selection-target')
+            input = $('input[name="' + this.$togglerInput.name + '"]')
+            input.val(target)
         }
 
         $toggler.on('click', $.proxy((function(e) {
-            var input, target;
-            $toggler.removeClass('active-field');
-            $(e.target).addClass('active-field');
-            target = $(e.target).data('selection-target');
-            input = $('input[name="' + this.$togglerInput.name + '"]');
+            let input
+            let target
 
-            return input.val(target);
-        }), this));
+            // $toggler.removeClass('active-field');
+            $toggler.parent().removeClass('active-field')
+
+            $(e.target).parent().addClass('active-field')
+            // $(e.target).addClass('active-field');
+
+            target = $(e.target).data('selection-target')
+            input = $('input[name="' + this.$togglerInput.name + '"]')
+            input.val(target)
+        }), this))
 
     },
 
     renderInputs: function(required, el, value, type, name, hint, className) {
-        var $input;
+        var $input, togglerClass
+
+        togglerClass = this.hasTogglers ? 'toggle-field' : ''
         if (type === 'select') {
-            $input = $('<div class="fb-field">' + '<div class="input-hint" data-selection-target="' + hint.toLowerCase() + '">' + hint + '</div>' + '<div class="select input"><select class="' + className + ' ' + required + '" data-hint="' + hint + '" data-name="' + name + '" /></div>' + '</div>');
+            $input = $(
+                '<div class="fb-field '+togglerClass+'">' + 
+                    '<div class="input-hint">' + hint + '</div>' + 
+                    '<div class="select input"><select class="' + className + ' ' + required + '" data-hint="' + hint + '" data-name="' + name + '" /></div>' + 
+                '</div>');
             $.each(el, function(i, item) {
                 $input.find('select').append($('<option>', {
                     value: item.value,
@@ -104,7 +144,15 @@ window.OptionModal = Garnish.Modal.extend({
             });
             $input.find('select').val(value);
         } else {
-            $input = $('<div class="fb-field">' + '<div class="input-hint" data-selection-target="' + hint.toLowerCase() + '">' + hint + '</div>' + '<div class="input">' + el + '</div>' + '</div>');
+            $input = $(
+                '<div class="fb-field '+togglerClass+'">' + 
+                    '<div class="input-hint">' + hint + '</div>' + 
+                    '<div class="input">' + el + '</div>' + 
+                '</div>');
+        }
+
+        if (this.hasTogglers) {
+            $input.append($('<div class="toggle-btn" data-selection-target="' + hint.toLowerCase() + '"></div>'))
         }
 
         this.$form.find('.body').append($input);

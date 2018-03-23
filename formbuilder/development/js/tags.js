@@ -1,6 +1,6 @@
 let Tag;
 
-Tag = Garnish.Base.extend({
+window.Tag = Garnish.Base.extend({
     $item: null,
     $deleteTag: null,
     init(item) {
@@ -22,4 +22,4 @@ Tag = Garnish.Base.extend({
     }
 });
 
-Garnish.$doc.ready(() => $('.result-item').each((i, el) => new Tag(el)));
+Garnish.$doc.ready(() => $('.result-item').each((i, el) => new window.Tag(el)));

@@ -24,14 +24,12 @@
         }
 
         .input-error {
-            font-family: $montserrat;
             font-size: 10px;
             padding: 0 15px 15px 15px;
             width: 100%;
         }
 
         label {
-            font-family: $montserrat;
             color: $c-textDarkBlue;
         }
 
@@ -64,7 +62,6 @@
         }
 
         input, textarea, select {
-            font-family: $montserrat;
             color: $c-textDarkBlue;
             outline: none;
             box-shadow: none !important;

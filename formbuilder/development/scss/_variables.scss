@@ -1,9 +1,7 @@
 // ============================================ *
 // * Variables
 // ============================================ *
-@import "mixins"; // Custom mixins, functions, etc
-
-$montserrat: 'Montserrat';
+@import "../../../shared/scss/mixins"; // Custom mixins, functions, etc
 
 // Typography
 $letter-spacing: .04em;

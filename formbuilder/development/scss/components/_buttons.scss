@@ -167,5 +167,13 @@
                 }
             }
         }
+
+        // Small
+        &.btn-small {
+            font-weight: 900;
+            font-size: 8px;
+            padding: 10px 15px;
+            letter-spacing: 0.1em;
+        }
     }
 }

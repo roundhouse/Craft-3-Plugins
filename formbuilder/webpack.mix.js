@@ -15,6 +15,7 @@ mix.js(sourcePath + '/js/formbuilder.js', distPath + '/js/')
     .js(sourcePath + '/js/modal.js', distPath + '/js/')
     .js(sourcePath + '/js/tags.js', distPath + '/js/')
     .js(sourcePath + '/js/fields.js', distPath + '/js/')
+    .js(sourcePath + '/js/integrations.js', distPath + '/js/')
     .sass(sourcePath + '/scss/formbuilder.scss', distPath + '/css/')
         .options({
             processCssUrls: false

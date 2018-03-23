@@ -1,0 +1,97 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% set bodyClass = 'emailbuilder eb-edit-template' %}
+{% set pluginCpUrl = url('email-builder') %}
+
+{% set docLinks = {
+    'formSettings': 'https://google.com/',
+    'formDatabase': 'https://yahoo.com/',
+    'formOptions': 'https://bing.com/',
+    'formSpamProtection': 'https://bing.com/'
+} %}
+
+{% set groupId = craft.app.request.getQueryParam('groupId') %}
+
+{% set details = true %}
+
+{% block header %}
+    {% include 'email-builder/_includes/_header' ignore missing with { title: title, saveBtn: true } %}
+{% endblock %}
+
+{% block main %}
+    <input type="hidden" name="action" value="email-builder/notification/save">
+    {{ redirectInput('email-builder/notifications') }}
+
+    {% if notification.id %}
+        <input type="hidden" name="notificationId" value="{{ notification.id }}">
+    {% endif %}
+
+    <input type="hidden" name="siteId" value="1">
+
+    {% set errors = notification.getErrors() %}
+
+    <div id="content-container">
+        <div id="content">
+
+            <div id="fields">
+
+                <div class="field" id="fields-body-field" data-type="craft\fields\PlainText">
+                    <div class="heading">
+                        <label id="fields-body-label" for="fields-body">{{ "Email Body"|t('email-builder') }}</label>
+                    </div>
+                    <div class="input ltr">
+                        {{ forms.textArea({
+                            name: 'content[body]',
+                            rows: 6,
+                            value: notification.content.body is defined ? notification.content.body
+                        }) }}
+                    </div>
+                </div>
+
+                <div class="field" id="fields-footer-field" data-type="craft\fields\PlainText">
+                    <div class="heading">
+                        <label id="fields-footer-label" for="fields-footer">{{ "Email Footer"|t('email-builder') }}</label>
+                    </div>
+                    <div class="input ltr">
+                        {{ forms.textArea({
+                            name: 'content[footer]',
+                            rows: 3,
+                            value: notification.content.footer is defined ? notification.content.footer
+                        }) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="details">
+        <div id="settings" class="meta">
+
+            <div class="field" id="slug-field">
+                <div class="heading">
+                    <label id="name-label" for="notificationName">{{ "Name"|t('app') }}</label>
+                </div>
+                <div class="input ltr">
+                    <input type="text" id="notificationName" class="text fullwidth"  name="name" value="{{ form is defined ? notification.name }}" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="field" id="slug-field">
+                <div class="heading">
+                    <label id="handle-label" for="notificationHandle">{{ "Handle"|t('app') }}</label>
+                </div>
+                <div class="input ltr">
+                    <input type="text" class="text fullwidth" id="notificationHandle" name="handle" value="{{ notification is defined ? notification.handle }}" autocomplete="off">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% js %}
+    {% if notification and not notification.handle %}new Craft.HandleGenerator('#notificationName', '#notificationHandle');{% endif %}
+{% endjs %}

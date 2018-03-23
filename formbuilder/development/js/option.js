@@ -1,6 +1,6 @@
 let Option;
 
-Option = Garnish.Base.extend({
+window.Option = Garnish.Base.extend({
     $container: null,
     $resultWrapper: null,
     $resultContainer: null,
@@ -25,7 +25,7 @@ Option = Garnish.Base.extend({
         this.$resultContainer = this.$container.find('.option-result');
         this.$toggle = this.$container.find('.option-toggle');
         this.$edit = this.$container.find('.option-edit');
-        
+
         if (this.$container.hasClass('tags')) {
             this.hasTags = true;
         }
@@ -189,7 +189,7 @@ Option = Garnish.Base.extend({
                 } else {
                     name = $(item).data('name');
                     hint = $(item).data('hint');
-                    (`[name='${name}']`).val('');
+                    $(`[name='${name}']`).val('');
                 }
             });
         }
@@ -198,4 +198,4 @@ Option = Garnish.Base.extend({
     }
 });
 
-Garnish.$doc.ready(() => $('.option-item').each((i, el) => new Option(el)));
+Garnish.$doc.ready(() => $('.option-item').each((i, el) => new window.Option(el)));

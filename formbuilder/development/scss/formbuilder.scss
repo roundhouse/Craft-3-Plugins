@@ -1,14 +1,10 @@
 /* ============================================ *
  * Form Builder
- * Version: 3.0.0
- * Author: Vadim Goncharov (@roundhouse)
  * Date: 1.29.2018
  * ============================================ */
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat:500,700,800');
-
 // 3rd Party Libraries
-@import "lib/bourbon/bourbon"; // Mixins, functions, etc https://github.com/thoughtbot/bourbon
+@import "../../../shared/scss/lib/bourbon/bourbon"; // Mixins, functions, etc https://github.com/thoughtbot/bourbon
 
 // Variables
 @import "variables"; // Variables, mixins, settings, etc

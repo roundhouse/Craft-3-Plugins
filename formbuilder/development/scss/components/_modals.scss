@@ -106,6 +106,28 @@
                     right: 8px;
                 }
             }
+
+            &.toggle-field {
+                opacity: .5;
+            }
+
+            &.active-field {
+                opacity: 1;
+                
+                .toggle-btn {
+                    background: $c-green;
+                    border: 2px solid $c-green;
+                }
+            }
+        }
+
+        .toggle-btn {
+            position: absolute;
+            left: -30px;
+            @include size(10px);
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid $c-border;
         }
 
         .footer-notes {

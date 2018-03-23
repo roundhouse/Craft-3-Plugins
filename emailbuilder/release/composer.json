@@ -1,0 +1,43 @@
+{
+    "name": "roundhouse/email-builder",
+    "description": "Email builder",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "email builder"
+    ],
+    "support": {
+        "docs": "https://github.com/roundhouse/email-builder/blob/master/README.md",
+        "issues": "https://github.com/roundhouse/email-builder/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Roundhouse",
+            "homepage": "https://roundhouseagency.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC15"
+    },
+    "autoload": {
+        "psr-4": {
+          "roundhouse\\emailbuilder\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Email Builder",
+        "handle": "email-builder",
+        "hasCpSettings": true,
+        "hasCpSection": true,
+        "changelogUrl": "https://raw.githubusercontent.com/roundhouse/email-builder/master/CHANGELOG.md",
+        "components": {
+            "emailBuilderService": "roundhouse\\emailbuilder\\services\\EmailBuilderService"
+        },
+        "class": "roundhouse\\emailbuilder\\EmailBuilder"
+    }
+}

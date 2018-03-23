@@ -1,6 +1,6 @@
 let FormBuilderSection;
 
-FormBuilderSection = Garnish.Base.extend({
+window.FormBuilderSection = Garnish.Base.extend({
     $container: null,
     $titlebar: null,
     $fieldsContainer: null,
@@ -8,39 +8,50 @@ FormBuilderSection = Garnish.Base.extend({
     $previewContainer: null,
     $actionMenu: null,
     $collapserBtn: null,
-    $optionBtn: null,
     $sectionToggleInput: null,
     $menuBtn: null,
     $status: null,
     modal: null,
     collapsed: false,
     optionCollapsed: true,
+    type: null,
 
-    init(el) {
+    // $addTemplateBtn: null,
+
+    init(el, type) {
         let menuBtn;
+        this.type = type
         this.$container = $(el);
         this.$menuBtn = this.$container.find('.actions > .settings');
         this.$collapserBtn = this.$container.find('.actions > .bodytoggle');
-        this.$optionBtn = this.$container.find('.actions > .optionstoggle');
         this.$sectionToggleInput = this.$container.find('.section-toggle');
         this.$titlebar = this.$container.find('.titlebar');
         this.$fieldsContainer = this.$container.find('.body');
         this.$optionsContainer = this.$container.find('.body-options');
         this.$previewContainer = this.$container.find('.preview');
         this.$status = this.$container.find('.actions > .status');
+
+        // this.$addTemplateBtn = this.$container.find('.add-template-btn')
+        
         menuBtn = new Garnish.MenuBtn(this.$menuBtn);
         this.$actionMenu = menuBtn.menu.$container;
         menuBtn.menu.settings.onOptionSelect = $.proxy(this, 'onMenuOptionSelect');
+        
         if (Garnish.hasAttr(this.$container, 'data-collapsed')) {
           this.collapse();
         }
+
         this._handleTitleBarClick = function(ev) {
           ev.preventDefault();
           return this.toggle();
         };
+
         this.addListener(this.$collapserBtn, 'click', this.toggle);
-        this.addListener(this.$optionBtn, 'click', this.toggleOptions);
         this.addListener(this.$titlebar, 'doubletap', this._handleTitleBarClick);
+
+        // if (this.type == 'email') {
+        //     this.addListener(this.$addTemplateBtn, 'click', this.addEmailTemplateModal);
+        // }
     },
 
     toggle() {
@@ -52,46 +63,12 @@ FormBuilderSection = Garnish.Base.extend({
         }
     },
     
-    toggleOptions() {
-        if (this.optionCollapsed) {
-            return this.expandOption();
-        } else {
-            return this.collapseOption(true);
-        }
-    },
-
-    expandOption() {
-        let collapsedContainerHeight;
-        let expandedContainerHeight;
-        if (!this.optionCollapsed) {
-            return;
-        }
-        this.collapse(true);
-        this.$container.removeClass('optionscollapsed');
-        this.$optionsContainer.velocity('stop');
-        this.$container.velocity('stop');
-        collapsedContainerHeight = this.$container.height();
-        this.$container.height('auto');
-        this.$optionsContainer.show();
-        expandedContainerHeight = this.$container.height();
-        this.$container.height(collapsedContainerHeight);
-        this.$optionsContainer.hide().velocity('fadeIn', {
-            duration: 'fast'
-        });
-        this.$container.velocity({
-            height: expandedContainerHeight
-        }, 'fast', $.proxy((function() {
-            return this.$container.height('auto');
-        }), this));
-
-        return this.optionCollapsed = false;
-    },
-
     collapse(animate) {
         let $customTemplates;
         let $fields;
         let previewHtml;
         let title;
+        
         this.$sectionToggleInput.prop('checked', true);
         if (this.collapsed) {
             return;
@@ -100,18 +77,6 @@ FormBuilderSection = Garnish.Base.extend({
         this.$container.addClass('bodycollapsed');
         previewHtml = '';
         title = this.$titlebar.find('.tout-title').text();
-        if (title === 'Fields') {
-            $fields = this.$fieldsContainer.find('.fld-field:not(.unused)').length;
-            $customTemplates = this.$fieldsContainer.find('.custom-email:not(.unused)').length;
-        
-            if ($fields > 0) {
-              previewHtml += `| ${$fields} Total Fields`;
-            }
-
-            if ($customTemplates > 0) {
-              previewHtml += ` | ${$customTemplates} Custom Templates`;
-            }
-        }
 
         this.$previewContainer.html(previewHtml);
         this.$fieldsContainer.velocity('stop');
@@ -141,30 +106,6 @@ FormBuilderSection = Garnish.Base.extend({
         return this.collapsed = true;
     },
 
-    collapseOption(animate) {
-        if (this.optionCollapsed) {
-            return;
-        }
-        this.$container.addClass('optionscollapsed');
-        this.$optionsContainer.velocity('stop');
-        this.$container.velocity('stop');
-        if (animate) {
-            this.$optionsContainer.velocity('fadeOut', {
-                duration: 'fast'
-            });
-            this.$container.velocity({
-                height: '100%'
-            }, 'fast');
-        } else {
-            this.$optionsContainer.hide();
-            this.$container.css({
-                height: '100%'
-            });
-        }
-
-        return this.optionCollapsed = true;
-    },
-
     expand() {
         let collapsedContainerHeight;
         let expandedContainerHeight;
@@ -172,7 +113,6 @@ FormBuilderSection = Garnish.Base.extend({
         if (!this.collapsed) {
             return;
         }
-        this.collapseOption(true);
         this.$container.removeClass('bodycollapsed');
         this.$fieldsContainer.velocity('stop');
         this.$container.velocity('stop');
@@ -262,12 +202,108 @@ FormBuilderSection = Garnish.Base.extend({
             case 'settings':
                 return this.settings();
         }
-    }
-});
+    },
+
+    // addEmailTemplateModal() {
+    //     new window.EmailTemplateElementModal('roundhouse\\emailbuilder\\elements\\EmailNotification', {}, this)
+    // }
+})
+
+
+// window.EmailTemplateElementModal = Craft.BaseElementSelectorModal.extend({
+//     $templateContainer: null,
+//     parent: null,
+
+//     init(elementType, settings, parent) {
+//         this.parent = parent
+//         this.base(elementType, settings)
+//         this.$templateContainer = parent.$container.find('.template-element')
+//     },
+
+//     onSelectionChange() {
+//         this.base()
+//     },
+
+//     onSelect(elementInfo) {
+//         Craft.postActionRequest('form-builder/integrations/get-template-html', {elementId: elementInfo[0].id, siteId: elementInfo[0].siteId}, function (data) {
+//             this.$templateContainer.html(data.html)
+
+//             new window.EmailTemplateElement(elementInfo[0], data.html, this.parent)
+
+//         }.bind(this))
+//     }
+// })
+
+// window.EmailTemplateElement = Garnish.Base.extend({
+//     $element: null,
+//     $previewHtmlBtn: null,
+
+//     elementId: null,
+//     siteId: null,
+
+//     init(element, html, parent) {
+//         this.$element = $(html)
+//         this.$previewHtmlBtn = parent.$container.find('.preview-html')
+//         this.elementId = element.id
+//         this.siteId = element.siteId
+
+//         console.log(this.$previewHtmlBtn)
+
+//         this.addListener(this.$previewHtmlBtn, 'click', this.previewHtmlTemplate);
+//     },
+
+//     previewHtmlTemplate(e) {
+//         e.preventDefault()
+
+//         Craft.postActionRequest('email-builder/notification/preview-notification', {notificationId: this.elementId, siteId: this.siteId}, function (data) {
+//             templateModal = new TemplatePreviewModel(data.template)
+//             templateModal.show()
+//         }.bind(this))
+//     }
+// })
+
+// TemplatePreviewModel = Garnish.Modal.extend({
+//     $iframeContainer: null,
+//     $iframe: null,
+
+//     init(template) {
+//         let body
+//         this.base()
+
+//         this.$formContainer = $('<form class="modal fitted formbuilder-modal has-sidebar">').appendTo(Garnish.$bod)
+//         this.setContainer(this.$formContainer)
+
+//         body = $([
+//             '<header>', 
+//                 '<span class="modal-title">', 'Form Attributes', '</span>', 
+//                 '<div class="instructions">', 'Global form attributes', '</div>', 
+//             '</header>', 
+//             '<div class="body">', 
+//             '</div>',
+//             '<footer class="footer">', 
+//                 '<div class="buttons">', 
+//                     `<input type="button" class="btns btn-modal cancel" value="${Craft.t('form-builder', 'Cancel')}">`, 
+//                     `<input type="submit" class="btns btn-modal submit" value="${Craft.t('form-builder', 'Save')}">`, 
+//                 '</div>', 
+//             '</footer>' 
+//         ].join('')).appendTo(this.$formContainer);
+
+//         $bodyContainer = this.$formContainer.find('.body')
+
+//         this.$iframeContainer = $('<div class="template-iframe-container"/>').appendTo(Garnish.$bod)
+//         this.$iframe = $('<iframe class="template-iframe" frameborder="0"/>').appendTo(this.$iframeContainer)
+
+//         this.$iframe[0].contentWindow.document.open()
+//         this.$iframe[0].contentWindow.document.write(template)
+//         this.$iframe[0].contentWindow.document.close()
+
+
+//     }
+// })
 
 Garnish.$doc.ready(() => {
-    $('.section-collapsible').each(function(i,el){
-        new FormBuilderSection(el);
+    $('.section-collapsible').each((i, el) => {
+        new window.FormBuilderSection(el, $(el).data('type'))
     });
 
     if (Craft.elementIndex) {
