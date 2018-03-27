@@ -89,8 +89,6 @@ class EmailBuilder extends Plugin
             EntriesController::EVENT_AFTER_SUBMIT_ENTRY,
             function($event) {
                 $entry = $event->entry;
-
-                Craft::dd($entry->form);
             }
         );
 

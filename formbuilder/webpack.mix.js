@@ -6,6 +6,7 @@ const distPath = 'release/src/assets';
 mix.js(sourcePath + '/js/formbuilder.js', distPath + '/js/')
     .js(sourcePath + '/js/dashboard.js', distPath + '/js/')
     .js(sourcePath + '/js/entries.js', distPath + '/js/')
+    .js(sourcePath + '/js/charts.js', distPath + '/js/')
     .js(sourcePath + '/js/groups.js', distPath + '/js/')
     .js(sourcePath + '/js/designer.js', distPath + '/js/')
     .js(sourcePath + '/js/field-designer.js', distPath + '/js/')

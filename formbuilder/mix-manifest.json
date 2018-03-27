@@ -12,5 +12,6 @@
     "/release/src/assets/js/field-designer.js": "/release/src/assets/js/field-designer.js",
     "/release/src/assets/js/entries.js": "/release/src/assets/js/entries.js",
     "/release/src/assets/js/designer.js": "/release/src/assets/js/designer.js",
-    "/release/src/assets/js/dashboard.js": "/release/src/assets/js/dashboard.js"
+    "/release/src/assets/js/dashboard.js": "/release/src/assets/js/dashboard.js",
+    "/release/src/assets/js/charts.js": "/release/src/assets/js/charts.js"
 }
