@@ -35,6 +35,7 @@ EntriesTableView = Craft.TableElementIndexView.extend({
     },
 
     getStorage(key) {
+        console.log(this.elementIndex._namespace)
         return EntriesTableView.getStorage(this.elementIndex._namespace, key);
     },
 

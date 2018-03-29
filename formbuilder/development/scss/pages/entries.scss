@@ -165,21 +165,52 @@
 // Entry
 .formbuilder.fb-entry-edit {
 
-    .fieldset {
-        background: white;
+    .form-widget {
+        header {
+            display: block;
+            height: auto;
+            text-align: center;
+
+            .group-icon {
+                background: $c-border;
+                display: inline-block;
+                padding: 25px;
+                border-radius: 50%;
+                font-size: 30px;
+                color: $c-lightGray;
+            }
+
+            .form-info {
+                margin-top: 20px;
+            }
+
+            h2 {
+                font-size: 18px;
+                font-weight: 400;
+            }
+        }
     }
 
-    .entry-field {
-        display: flex;
-        padding: 20px;
-        border-bottom: 1px solid $c-border;
+    .notes-widget {
+        header {
+            display: flex;
 
-        .entry-label {
-            font-weight: 700;
+            a {
+                margin-left: auto;
+                font-size: 10px;
+                color: $c-lightGray;
+                transition: all .3s ease;
+
+                &:hover {
+                    color: darken($c-lightGray, 20);
+                }
+            }
         }
 
-        .entry-value {
-            margin-left: auto;
+        .loader {
+            position: absolute;
+            top: 10px;
+            left: 50%;
         }
     }
 

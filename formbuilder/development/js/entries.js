@@ -1,3 +1,140 @@
+let WriteNoteWidget
+
+
+WriteNoteWidget = Garnish.Base.extend({
+    $widget: null,
+    $btn: null,
+    $list: null,
+    $noteTextarea: null,
+    $spinner: null,
+
+    modal: null,
+    note: null,
+    entryId: null,
+
+    init(widget) {
+        this.$widget = $(widget)
+        this.$btn = this.$widget.find('#write-note-btn')
+        this.$list = this.$widget.find('.list')
+        this.$spinner = this.$widget.find('.loader')
+
+        this.entryId = this.$widget.data('entry-id')
+
+        this.addListener(this.$btn, 'click', 'openNoteModel')
+
+    },
+
+    openNoteModel(e) {
+        e.preventDefault()
+
+        if (this.modal) {
+            this.modal.show()
+        } else {
+            this.modal = new NoteModal(this)
+        }
+        
+        this.modal.on('save', $.proxy(this, 'updateNotes'))
+    },
+
+    updateNotes(data) {
+        this.$spinner.removeClass('hidden')
+
+        data = {
+            note: this.note,
+            entryId: this.entryId
+        }
+
+        Craft.postActionRequest('form-builder/notes/save', data, $.proxy(((response, textStatus) => {
+            console.log(response)
+
+            if (textStatus === 'success') {
+                Craft.cp.displayNotice(Craft.t('form-builder', 'Note added'))
+                this.$spinner.addClass('hidden')
+                this.updateNotesHtml(response.note)
+            }
+        }), this))
+
+        this.modal.hide()
+    },
+
+    updateNotesHtml(data) {
+        let author
+        let note
+
+        note = data.note
+        author = data.author.fullName
+
+        $markup = $('<div class="list-item pad">' +
+                '<div class="item-meta">' +
+                    '<span class="item-meta-icon"><i class="far fa-user"></i></span>' +
+                    '<span class="item-meta-title">' + author + '</span>' +
+                    '<span class="item-meta-right">' + Craft.t('form-builder', 'Now') + '</span>' +
+                '</div>' +
+                '<div class="item-title">' + note + '</div>' +
+            '</div>')
+
+        this.$list.prepend($markup)
+    }
+
+})
+
+NoteModal = Garnish.Modal.extend({
+    widget: null,
+
+    init(widget) {
+        var body, self
+        self = this
+        this.base()
+
+        this.widget = widget
+
+        this.$form = $('<form class="modal fitted formbuilder-modal">').appendTo(Garnish.$bod)
+        this.setContainer(this.$form)
+        
+        body = $([
+            '<header>', 
+                '<span class="modal-title">' + Craft.t('form-builder', 'Note') + '</span>', 
+                '<div class="instructions">' + Craft.t('form-builder', 'Leave a note for this entry') + '</div>', 
+            '</header>', 
+            '<div class="body">', 
+                '<div class="fb-field">',
+                    '<div class="input-hint">TEXT</div>',
+                    '<div class="input"><textarea id="note-text" rows="6"></textarea></div>', 
+                '</div>', 
+            '</div>', 
+            '<footer class="footer">', 
+                '<div class="buttons">', 
+                    '<input type="button" class="btns btn-modal cancel" value="' + Craft.t('form-builder', 'Cancel') + '">', 
+                    '<input type="submit" class="btns btn-modal submit" value="' + Craft.t('form-builder', 'Add') + '">', 
+                '</div>', 
+            '</footer>'].join('')).appendTo(this.$form)
+
+        this.show();
+        this.$saveBtn = body.find('.submit')
+        this.$cancelBtn = body.find('.cancel')
+        this.$noteTextarea = body.find('#note-text')
+
+        this.addListener(this.$cancelBtn, 'click', 'hide')
+        this.addListener(this.$form, 'submit', 'save')
+    },
+
+    save(e) {
+        e.preventDefault()
+        this.note = this.$noteTextarea.val()
+        this.widget.note = this.note
+
+        if (this.note == '') {
+            Garnish.shake(this.$container)
+        } else {
+            this.trigger('save', {
+                note: this.note
+            })
+        }
+    },
+})
+
+
+
 Craft.FileUploadsIndex = Garnish.Base.extend({
     $container: $('.upload-details'),
     elementIndex: null,
@@ -44,6 +181,9 @@ Craft.FileUploadsIndex = Garnish.Base.extend({
 });
 
 Garnish.$doc.ready(() => {
+
+    new WriteNoteWidget('.notes-widget')
+
     if (Craft.elementIndex) {
         Craft.elementIndex.on('updateElements', function(e) {
             let elementsCount;
@@ -88,28 +228,6 @@ Garnish.$doc.ready(() => {
                     }
                 }
             }), this))
-
-
-            // if (selectedSource != '*') {
-                // Update unread count per form group
-                // Craft.postActionRequest('form-builder/entries/get-unread-entries-by-source', { source: selectedSource }, $.proxy(((response, textStatus) => {
-                //     console.log(response)
-                //     if (textStatus === 'success') {
-                        // $.each(response.grouped, (key, entries) => {
-                        //     console.log('Form: ', key)
-                        //     console.log('Entries: ', entries)
-                        // })
-                        // if (response.totalCount > 0) {
-                        //     $('[data-key="'+selectedSource+'"]').find('.entry-count').html(response.totalCount)
-                        // } else {
-                        //     $('[data-key="'+selectedSource+'"]').find('.entry-count').html('')
-                        // }
-                    // }
-                // }), this))
-            // } else {
-
-            // }
-
         });
     }
 
