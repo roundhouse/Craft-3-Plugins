@@ -133,7 +133,30 @@ NoteModal = Garnish.Modal.extend({
     },
 })
 
+AssetManagement = Garnish.Base.extend({
+    $container: null,
+    $elements: null,
 
+    init(container) {
+        this.$container = $(container)
+        this.$elements = this.$container.find('.item-asset')
+
+        this.$elements.each((i, el) => {
+            element = new AssetFile(el)
+        });
+
+    }
+})
+
+AssetFile = Garnish.Base.extend({
+    element: null,
+
+    init(element) {
+        this.element = $(element)
+
+        console.log(this.element)
+    }
+})
 
 Craft.FileUploadsIndex = Garnish.Base.extend({
     $container: $('.upload-details'),
@@ -181,8 +204,25 @@ Craft.FileUploadsIndex = Garnish.Base.extend({
 });
 
 Garnish.$doc.ready(() => {
-
+    const ACTION_BTN_CONTAINER = $('.element-actions')
+    const ACTION_ASSETS_DOWNLOAD_BTN = $('#download-all-assets')
+    
     new WriteNoteWidget('.notes-widget')
+    new AssetManagement('#content')
+
+    $('.asset-select').each((i, el) => {
+        $(el).on('click', (e) => {
+            $target = $(el)
+            id = $target.data('asset-id')
+            $target.toggleClass('active')
+            
+            ACTION_ASSETS_DOWNLOAD_BTN.removeClass('hidden')
+        })
+    });
+
+    // $('.asset-select').on('click', (e) => {
+    //     console.log(e)
+    // })
 
     if (Craft.elementIndex) {
         Craft.elementIndex.on('updateElements', function(e) {

@@ -117,6 +117,83 @@
                     background: $c-border;
                 }
             }
+
+            &.element-actions {
+                display: flex;
+                padding: 0;
+
+                button {
+                    align-self: center;
+                    width: 100%;
+                    display: inline-block;
+                    border-radius: 0;
+                }
+
+                span {
+                    text-align: center;
+                }
+
+                .asset-count {
+                    padding-left: 7px;
+                }
+            }
+        }
+
+        .item-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .item-asset {
+            display: flex;
+            flex-direction: row;
+            border: 1px solid $c-border;
+            border-radius: $border-radius;
+            margin-bottom: 20px;
+            width: 48%;
+
+            .asset-thumbnail {
+                border-right: 1px solid $c-border;
+            }
+
+            .asset-description {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+
+                .download-asset {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                }
+
+                .asset-select {
+                    position: absolute;
+                    bottom: 10px;
+                    right: 10px;
+                    transition: all .3s ease;
+                    color: $c-lightGray;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: darken($c-lightGray, 20)
+                    }
+
+                    &.active {
+                        color: $c-green;
+                    }
+                }
+
+                .asset-title {
+                    padding-right: 20px;
+                }
+            }
+            
+            .pad {
+                padding: 10px;
+            }
         }
 
         .item-title, .item-title a {
