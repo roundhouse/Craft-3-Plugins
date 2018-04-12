@@ -1,6 +1,5 @@
 let WriteNoteWidget
 
-
 WriteNoteWidget = Garnish.Base.extend({
     $widget: null,
     $btn: null,
@@ -21,14 +20,14 @@ WriteNoteWidget = Garnish.Base.extend({
         this.entryId = this.$widget.data('entry-id')
 
         this.addListener(this.$btn, 'click', 'openNoteModel')
-
     },
 
     openNoteModel(e) {
         e.preventDefault()
 
         if (this.modal) {
-            this.modal.show()
+            delete this.modal
+            this.modal = new NoteModal(this)
         } else {
             this.modal = new NoteModal(this)
         }
@@ -45,8 +44,6 @@ WriteNoteWidget = Garnish.Base.extend({
         }
 
         Craft.postActionRequest('form-builder/notes/save', data, $.proxy(((response, textStatus) => {
-            console.log(response)
-
             if (textStatus === 'success') {
                 Craft.cp.displayNotice(Craft.t('form-builder', 'Note added'))
                 this.$spinner.addClass('hidden')
@@ -74,6 +71,7 @@ WriteNoteWidget = Garnish.Base.extend({
             '</div>')
 
         this.$list.prepend($markup)
+        $('.no-items').remove()
     }
 
 })
@@ -136,93 +134,175 @@ NoteModal = Garnish.Modal.extend({
 AssetManagement = Garnish.Base.extend({
     $container: null,
     $elements: null,
+    $form: null,
+    $trigger: null,
+    
+    downloadCount: null,
 
     init(container) {
         this.$container = $(container)
         this.$elements = this.$container.find('.item-asset')
+        
+        this.$form = this.$container.find('#download-all-assets')
+        this.$trigger = this.$form.find('button')
+        this.downloadCount = this.$form.find('.asset-count')
+        this.$status = $('.download-status', this.$form)
 
         this.$elements.each((i, el) => {
-            element = new AssetFile(el)
+            element = new AssetFile(el, this)
         });
+        
+        this.addListener(this.$form, 'submit', 'onSubmit')
+    },
 
+    updateDownloadBtn() {
+        items = Object.keys(AssetManagement.storage).length
+
+        if (items > 0) {
+            this.downloadCount.html(items)
+            this.$trigger.removeClass('hidden')
+        } else {
+            this.$trigger.addClass('hidden')
+            this.downloadCount.html('0')
+        }
+    },
+
+    onSubmit(e) {
+        e.preventDefault()
+
+        if (!this.$trigger.hasClass('disabled')) {
+            if (!this.progressBar) {
+                this.progressBar = new Craft.ProgressBar(this.$status)
+            } else {
+                this.progressBar.resetProgressBar()
+            }
+
+            this.progressBar.$progressBar.removeClass('hidden')
+
+            this.progressBar.$progressBar.velocity('stop').velocity({
+                opacity: 1
+            }, {
+                complete: $.proxy(function() {
+                    let postData = Garnish.getPostData(this.$form)
+                    let params = Craft.expandPostArray(postData)
+
+                    params.assets = items = AssetManagement.storage
+
+                    let data = {
+                        params: params
+                    }
+
+                    Craft.postActionRequest(params.action, data, $.proxy(function(response, textStatus) {
+                        if (textStatus === 'success') {
+                            if (response && response.error) {
+                                alert(response.error)
+                            }
+
+                            this.updateProgressBar()
+
+                            if (response && response.downloadFile) {
+                                var $iframe = $('<iframe/>', {'src': Craft.getActionUrl('form-builder/assets/download-file', {'filename': response.downloadFile})}).hide()
+                                this.$form.append($iframe)
+                            }
+
+                            setTimeout($.proxy(this, 'onComplete'), 300)
+
+                        } else {
+                            Craft.cp.displayError(Craft.t('form-builder', 'There was a problem downloading assets. Please check the Craft logs.'))
+
+                            this.onComplete(false)
+                        }
+
+                    }, this), {
+                        complete: $.noop
+                    })
+                }, this)
+            })
+
+            if (this.$allDone) {
+                this.$allDone.css('opacity', 0)
+            }
+
+            this.$trigger.addClass('disabled')
+            this.$trigger.trigger('blur')
+        }
+    },
+
+    updateProgressBar: function() {
+        let width = 100
+        this.progressBar.setProgressPercentage(width)
+    },
+
+    onComplete: function(showAllDone) {
+        this.progressBar.$progressBar.velocity({opacity: 0}, {
+            duration: 'fast', 
+            complete: $.proxy(function() {
+                this.$trigger.removeClass('disabled')
+                this.$trigger.trigger('focus')
+            }, this)
+        })
     }
+
+}, {
+    storage: {},
+
+    setStorage(namespace, key, value, remove = false) {
+        if (typeof AssetManagement.storage[namespace] == typeof undefined) {
+            AssetManagement.storage[namespace] = {}
+        }
+
+        if (remove) {
+            delete AssetManagement.storage[namespace]
+        } else {
+            AssetManagement.storage[namespace][key] = value
+        }
+
+    },
+
+    getStorage(namespace, key) {
+        if (AssetManagement.storage[namespace] && AssetManagement.storage[namespace][key]) {
+            return AssetManagement.storage[namespace][key]
+        }
+
+        return null
+    },
 })
 
 AssetFile = Garnish.Base.extend({
     element: null,
+    $selectBtn: null,
 
-    init(element) {
+    parent: null,
+    id: null,
+
+    init(element, parent) {
+        this.parent = parent
         this.element = $(element)
+        this.$selectBtn = this.element.find('.asset-select')
+        this.id = this.$selectBtn.data('asset-id')
 
-        console.log(this.element)
+        this.addListener(this.$selectBtn, 'click', 'toggleSelection')
+    },
+
+    toggleSelection() {
+        if (this.$selectBtn.hasClass('active')) {
+            this.$selectBtn.removeClass('active')
+            this.element.removeClass('selected')
+            AssetManagement.setStorage(this.id, 'asset', this.id, true)
+        } else {
+            this.element.addClass('selected')
+            this.$selectBtn.addClass('active')
+            AssetManagement.setStorage(this.id, 'asset', this.id)
+        }   
+
+        this.parent.updateDownloadBtn()
     }
 })
 
-Craft.FileUploadsIndex = Garnish.Base.extend({
-    $container: $('.upload-details'),
-    elementIndex: null,
-
-    init(elementIndex, container, settings) {
-        let $elements;
-        this.elementIndex = elementIndex;
-        this.$container = $(container);
-        this.setSettings(settings, Craft.BaseElementIndexView.defaults);
-        this.$loadingMoreSpinner = $('<div class="centeralign hidden">' + '<div class="spinner loadingmore"></div>' + '</div>').insertAfter(this.$container);
-        this.$elementContainer = this.getElementContainer();
-        
-        $elements = this.$elementContainer.children();
-
-        if (this.settings.context === 'index') {
-            this.addListener(this.$elementContainer, 'dblclick', function(ev) {
-                var $element;
-                let $target;
-                $target = $(ev.target);
-                
-                if ($target.hasClass('element')) {
-                    $element = $target;
-                } else {
-                    $element = $target.closest('.element');
-                }
-                
-                if ($element.length) {
-                    this.createElementEditor($element);
-                }
-            });
-        }
-    },
-
-    getElementContainer() {
-        this.$table = this.$container.find('table:first');
-        this.$table.children('tbody:first');
-    },
-
-    createElementEditor($element) {
-        new Craft.ElementEditor($element, {
-            onSaveElement: $.proxy((response => Craft.cp.displayNotice(Craft.t('form-builder', 'Asset updated'))), this)
-        });
-    }
-});
-
 Garnish.$doc.ready(() => {
-    const ACTION_BTN_CONTAINER = $('.element-actions')
-    const ACTION_ASSETS_DOWNLOAD_BTN = $('#download-all-assets')
-    
+
     new WriteNoteWidget('.notes-widget')
-    new AssetManagement('#content')
-
-    $('.asset-select').each((i, el) => {
-        $(el).on('click', (e) => {
-            $target = $(el)
-            id = $target.data('asset-id')
-            $target.toggleClass('active')
-            
-            ACTION_ASSETS_DOWNLOAD_BTN.removeClass('hidden')
-        })
-    });
-
-    // $('.asset-select').on('click', (e) => {
-    //     console.log(e)
-    // })
+    new AssetManagement('#main')
 
     if (Craft.elementIndex) {
         Craft.elementIndex.on('updateElements', function(e) {
@@ -270,6 +350,26 @@ Garnish.$doc.ready(() => {
             }), this))
         });
     }
+    // TODO: delete entry and all assets and notes
+    $('#delete-entry').on('click', (e) => {
+        let entryId = $(e.currentTarget).data('entry-id')
+        let data = {
+            id: entryId
+        }
+
+        if (confirm(Craft.t("form-builder", "Deleting entry will remove all relevant assets and notes, are you sure?"))) {
+            Craft.postActionRequest('form-builder/entries/delete', data, $.proxy(((response, textStatus) => {
+                if (textStatus === 'success') {
+                    Craft.cp.displayNotice(Craft.t('form-builder', 'Deleting entry...'))
+
+                    setTimeout(function() { 
+                        window.location.href = `${window.FormBuilder.adminUrl}/entries`
+                    }, 2000)
+
+                }
+            }), this));
+        }
+    })
 
     $('.submission-action-trigger').on('click', function(e) {
         e.preventDefault();

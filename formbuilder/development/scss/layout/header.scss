@@ -256,6 +256,11 @@
         padding-bottom: 20px;
         font-size: 11px;
     }
+
+    #crumbs {
+        background: $c-border;
+        border-bottom: 1px solid $c-lightGray;
+    }
 }
 
 @include bp(min-width, $tablet) {

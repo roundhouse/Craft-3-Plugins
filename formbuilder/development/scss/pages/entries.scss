@@ -207,10 +207,50 @@
             }
         }
 
+        // li {
+        //     outline: none;
+        //     user-select: none;
+        // }
+
+        // .slip-swiping-container {
+        //     overflow-x: hidden;
+        // }
+
+        .delete-note {
+            display: block;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 9px;
+            color: $c-red;
+            line-height: normal;
+            transition: all .3s ease;
+
+            &:hover {
+                color: red;
+            }
+        }
+
         .loader {
             position: absolute;
             top: 10px;
             left: 50%;
+        }
+    }
+
+    .download-status {
+        position: relative;
+
+        .progressbar {
+            top: 8px;
+            border-color: $c-lightGray;
+        }
+
+        .alldone {
+            position: absolute;
+            left: 50%;
+            margin-left: -6px;
+            top: 2px;
         }
     }
 

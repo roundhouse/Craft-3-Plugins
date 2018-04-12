@@ -60,6 +60,7 @@
 }
 
 %fld-tabcontent {
+    position: relative;
     padding: 0;
     border: 1px solid $c-border;
 }
@@ -84,6 +85,23 @@
     &:last-child { border-bottom: none; }
 
     & + .fld-field { margin: 0; }
+
+    .field-icon {
+        display: inline-block;
+        width: 20px;
+        text-align: center
+    }
+
+    &.not-available {
+        display: none;
+        // background: repeating-linear-gradient(
+        //   45deg,
+        //   #606dbc,
+        //   #606dbc 10px,
+        //   #465298 10px,
+        //   #465298 20px
+        // );
+    }
 }
 
 %fld-insertion {
@@ -287,6 +305,7 @@
             }
 
             .fld-tab.fld-tab-caboose {
+                position: absolute;
                 margin: 0 0 0 -1px !important;
                 padding: 0 !important;
                 min-height: auto !important;

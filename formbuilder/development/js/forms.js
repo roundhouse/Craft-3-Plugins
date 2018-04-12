@@ -349,8 +349,8 @@ Garnish.$doc.ready(() => {
         if (confirm(Craft.t('form-builder', "Are you sure you want to delete this form and all its entries?"))) {
             Craft.postActionRequest('form-builder/forms/delete', data, $.proxy(((response, textStatus) => {
                 if (textStatus === 'success') {
-                    Craft.cp.displayNotice(Craft.t('Form deleted'));
-                    window.location.href = `${window.FormBuilder.adminUrl}/forms`;
+                    Craft.cp.displayNotice(Craft.t('form-builder', 'Form deleted'));
+                    window.location.href = `${Craft.getCpUrl()}/form-builder/forms`;
                 }
             }), this));
         }

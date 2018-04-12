@@ -119,7 +119,7 @@ LD_Tabs = new (Garnish.Base.extend({
         var $tab = $('<div class="fld-tab">' +
             '<div class="tabs">' +
             '<div class="tab sel draggable">' +
-            '<span>Fieldset</span>' +
+            '<span>Fieldset ' + (e.tabGrid.$items.length + 1) + '</span>' +
             '<a class="settings icon" title="' + Craft.t('app', 'Rename') + '"></a>' +
             '</div>' +
             '</div>' +
