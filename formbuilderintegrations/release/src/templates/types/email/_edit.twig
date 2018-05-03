@@ -1,0 +1,93 @@
+{% extends "_layouts/cp" %}
+{% import '_includes/forms' as forms %}
+
+{% set bodyClass = (bodyClass is defined ? bodyClass~' ' : '') ~ "integrations-email" %}
+{% set selectedSubnavItem = "email" %}
+
+{% set details = true %}
+{% set showPreviewBtn = true %}
+
+{% block header %}
+    {{ block('pageTitle') }}
+    {{ block('contextMenu') }}
+    <div class="flex-grow"></div>
+    {% if showPreviewBtn or shareUrl is defined %}
+        {% if showPreviewBtn %}
+            <div class="btn livepreviewbtn">{{ "Live Preview"|t('app') }}</div>
+        {% endif %}
+        {% if shareUrl is defined %}
+            <a href="{{ shareUrl }}" class="btn sharebtn" target="_blank">{{ 'Share'|t('app') }}</a>
+        {% endif %}
+    {% endif %}
+    {{ block('actionButton') }}
+{% endblock %}
+
+{% block main %}
+    <input type="hidden" name="action" value="formbuilder-integrations/email/save">
+    <input type="hidden" name="type" value="email">
+
+    {% if redirect is defined and redirect %}
+        {{ redirectInput(redirect) }}
+    {% else %}
+        {{ redirectInput('formbuilder-integrations/email') }}
+    {% endif %}
+
+    {% if integration.id %}
+        <input type="hidden" name="integrationId" value="{{ integration.id }}">
+    {% endif %}
+
+    <div id="content-container">
+        <div id="content">
+            <div class="fields">
+                {% set fields = craft.fbi.emails.getFields() %}
+
+                {% for field in fields %}
+                    {% set value = (integration.content[field.handle] is defined ? integration.content[field.handle] : '') %}
+                    {% set input = craft.fbi.emails.getInputHtml(value, field) %}
+
+                    <div class="field">
+                        <div class="heading">
+                            <label for="">{{ field.label }}</label>
+                        </div>
+                        <div class="input">
+                            {{ input |raw }}
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div id="details">
+        <div id="settings" class="meta">
+            {{ forms.textField({
+                label: "Title"|t('app'),
+                id: 'field-title',
+                name: 'title',
+                value: integration.title,
+                errors: integration.getErrors('title')
+            }) }}
+
+            {{ forms.textField({
+                label: "Handle"|t('app'),
+                id: 'field-handle',
+                name: 'handle',
+                value: integration.handle,
+                errors: integration.getErrors('handle')
+            }) }}
+
+            {{ forms.lightswitchField({
+                label: "Enabled"|t('app'),
+                id: 'field-enabled',
+                name: 'enabled',
+                on: integration.enabled
+            }) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% js %}
+    {% if integration and not integration.handle %}new Craft.HandleGenerator('#field-title', '#field-handle');{% endif %}
+{% endjs %}

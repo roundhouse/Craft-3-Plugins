@@ -113,6 +113,7 @@ window.Option = Garnish.Base.extend({
 
                     if (item.type !== 'checkbox') {
                         currentValue = $(`[name='${item.name}']`).val();
+                        console.log(item.name)
                         className = item.name.replace(/[_\W]+/g, "-").slice(0, -1);
 
                         $.each(self.modal.$modalInputs, (i, item) => {

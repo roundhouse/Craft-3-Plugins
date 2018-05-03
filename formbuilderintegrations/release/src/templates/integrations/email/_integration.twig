@@ -1,0 +1,52 @@
+{% import "form-builder/_includes/_components" as components %}
+
+{% set enabled = attribute(form.integrations.email, index).enabled is defined and attribute(form.integrations.email, index).enabled ? true : false %}
+{% set collapsed = attribute(form.settings.sections.integrations.email, index).collapsed is defined and attribute(form.settings.sections.integrations.email, index).collapsed ? true : false %}
+{% set templatePath = 'formbuilder-integrations/integrations/email/fields/' %}
+
+<section class="cmp-tout-alt section-collapsible" data-type="{{ type.handle }}" {% if collapsed %} data-collapsed{% endif %}>
+    <input type="hidden" name="integrations[{{ type.handle }}][{{ index }}][elementId]" value="{{ integration.id }}">
+    <input type="hidden" name="settings[sections][integrations][{{ type.handle }}][{{ index }}][collapsed]" value="0" />
+    <input type="checkbox" name="settings[sections][integrations][{{ type.handle }}][{{ index }}][collapsed]" value="1" class="section-toggle hidden" {{ collapsed ? 'checked' }} />
+
+    <header>
+        <div class="titlebar">
+            <span class="tout-title">
+                {% include 'formbuilder-integrations/_includes/icons/integrations-' ~ type.handle ignore missing %}
+                <span class="type-title">{{ type.title }}</span>
+                <a href="#" class="delete-btn">Remove</a>
+            </span>
+            <div class="integration-info">
+                <span class="integration-title">{{ integration.title }}</span>
+                <div class="status-container">
+                    {% if integration.status == 'enabled' %}
+                        <div class="status on" title="Enabled"></div>
+                    {% else %}
+                        <div class="status off" title="Disabled"></div>
+                    {% endif %}
+                    <div class="status-title">{{ integration.status |pascal }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <a class="icons collapser bodytoggle" title="Collapse" role="combobox" tabindex="0"></a>
+        </div>
+    </header>
+
+    <div class="body">
+        <div class="fields">
+            <input type="checkbox" name="integrations[{{ type.handle }}][{{ index }}][enabled]" value="1" class="enable-integration-section hidden" {{ enabled ? 'checked' }} />
+            {% include templatePath ~ 'to-email' ignore missing %}
+            {% include templatePath ~ 'from-name' ignore missing %}
+            {% include templatePath ~ 'from-email' ignore missing %}
+            {% include templatePath ~ 'subject' ignore missing %}
+            {% include templatePath ~ 'reply-to' ignore missing %}
+            {% include templatePath ~ 'cc' ignore missing %}
+            {% include templatePath ~ 'bcc' ignore missing %}
+            {% include templatePath ~ 'submission' ignore missing %}
+            {% include templatePath ~ 'attachments' ignore missing %}
+        </div>
+        <div class="body-content"></div>
+    </div>
+
+</section>

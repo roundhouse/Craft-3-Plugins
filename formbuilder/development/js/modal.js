@@ -113,17 +113,30 @@ window.OptionModal = Garnish.Modal.extend({
             let input
             let target
 
-            // $toggler.removeClass('active-field');
             $toggler.parent().removeClass('active-field')
 
+            this.disableField($(e.target).parent().parent().find('input'))
+            this.disableField($(e.target).parent().parent().find('select'))
+
             $(e.target).parent().addClass('active-field')
-            // $(e.target).addClass('active-field');
+
+            this.enableField($(e.target).parent().find('input'))
+            this.enableField($(e.target).parent().find('select'))
 
             target = $(e.target).data('selection-target')
             input = $('input[name="' + this.$togglerInput.name + '"]')
             input.val(target)
         }), this))
 
+    },
+
+    disableField: function(target) {
+        target.prop('disabled', true)
+        target.val('')
+    },
+
+    enableField: function(target) {
+        target.prop('disabled', false)
     },
 
     renderInputs: function(required, el, value, type, name, hint, className) {

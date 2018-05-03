@@ -98,7 +98,7 @@
             .y-value {
                 font-size: 18px;
                 font-weight: 800;
-                color: $c-green;
+                color: $c-blue;
             }
         }
 
@@ -120,15 +120,15 @@
         }
 
         .plots .plot {
-            fill: $c-success !important;
+            fill: $c-blue !important;
         }
 
         .chart-line path {
-            stroke: $c-success !important;
+            stroke: $c-blue !important;
         }
 
         .chart-area path {
-            fill: $c-success !important;
+            fill: $c-blue !important;
         }
 
 
@@ -148,6 +148,17 @@
             .total {
                 margin-bottom: 15px;
             }
+        }
+    }
+
+
+    .plugin-updates {
+        .plugin-warning {
+            color: $c-red;
+        }
+        
+        .plugin-success {
+            color: $c-blue;
         }
     }
 }

@@ -74,9 +74,14 @@
         }
 
         &.btn-add {
-            background-color: lighten($c-moss, 35);
+            background-color: lighten($c-blue, 35);
+            
+            &.option-edit {
+                color: white;
+            }
+
             &:hover {
-                background-color: $c-moss;
+                background-color: $c-blue;
                 svg * {
                     fill: $c-white !important;
                 }
@@ -118,17 +123,17 @@
             }
         }
 
-        &.btn-moss {
-            background-color: $c-moss;
-            &:hover, &.active {
-                background-color: lighten($c-moss, 5);
-            }
-        }
+        // &.btn-moss {
+        //     background-color: $c-moss;
+        //     &:hover, &.active {
+        //         background-color: lighten($c-moss, 5);
+        //     }
+        // }
 
         &.btn-muted {
-            background-color: rgba($c-moss, .4);
+            background-color: rgba($c-lightGray, .4);
             &:hover, &.active {
-                background-color: rgba($c-moss, .3);
+                background-color: rgba($c-lightGray, .3);
             }
         }
 

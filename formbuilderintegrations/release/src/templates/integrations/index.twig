@@ -1,0 +1,20 @@
+{% extends "_layouts/elementindex" %}
+
+{% set elementType = 'owldesign\\formbuilderintegrations\\elements\\Integration' %}
+{% set title = "Integrations"|t('formbuilder-integrations') %}
+{% set selectedSubnavItem = "integrations" %}
+{% set bodyClass = (bodyClass is defined ? bodyClass~' ' : '') ~ "integrations-email" %}
+
+{#{% block actionButton %}#}
+    {#<div class="btngroup">#}
+        {#<a href="{{ url('formbuilder-integrations/integrations/email/edit') }}" class="btn submit">{{ "New Email Integration"|t('formbuilder-integrations') }}</a>#}
+
+        {#<div class="btn submit menubtn"></div>#}
+        {#<div class="menu">#}
+            {#<ul>#}
+                {#<li><a class="formsubmit" href="{{ url('formbuilder-integrations/integrations/email/edit') }}">{{ "New Email Integration"|t('formbuilder-integrations') }}</a></li>#}
+                {#<li><a class="formsubmit" href="{{ url('formbuilder-integrations/integrations/slack/edit') }}">{{ "New Slack Integration"|t('formbuilder-integrations') }}</a></li>#}
+            {#</ul>#}
+        {#</div>#}
+    {#</div>#}
+{#{% endblock %}#}

@@ -1,0 +1,27 @@
+{% extends "_layouts/cp" %}
+
+{% set bodyClass = (bodyClass is defined ? bodyClass~' ' : '') ~ "integrations-edit" %}
+{% set selectedSubnavItem = "integrations" %}
+
+{% set details = true %}
+
+{% block main %}
+    <input type="hidden" name="action" value="formbuilder-integrations/integrations/save">
+
+    {% if integration.id %}
+        <input type="hidden" name="integrationId" value="{{ integration.id }}">
+    {% endif %}
+
+    <div id="content-container">
+        <div id="content">
+            test
+        </div>
+    </div>
+
+    <div id="details">
+        <div id="settings">
+            test
+        </div>
+    </div>
+
+{% endblock %}

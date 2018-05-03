@@ -1,0 +1,11 @@
+{% if content.bodyCopy is defined and content.bodyCopy %}
+    {{ content.bodyCopy |raw }}
+{% endif %}
+
+{% for field in fields %}
+    {{ field.name }}: {{ field.value }}
+{% endfor %}
+
+{% if content.footerCopy is defined and content.footerCopy %}
+    {{ content.footerCopy |raw }}
+{% endif %}

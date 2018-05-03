@@ -17,8 +17,8 @@
 @import "pages/global"; // Global styles
 @import "pages/forms"; // Forms styles
 @import "pages/entries"; // Entry styles
-@import "pages/notifications"; // Notifications styles
-@import "pages/dashboard"; // Notifications styles
+@import "pages/dashboard"; // Dashboard styles
+@import "pages/integrations"; // Integrations styles
 
 
 // Components
@@ -30,6 +30,3 @@
 @import "components/fieldlayoutdesigner";
 @import "components/cmp-tout";
 @import "components/option-tout";
-// @import "components/counter-tout";
-// @import "components/template-tout";
-// @import "components/plugin-settings-tout";

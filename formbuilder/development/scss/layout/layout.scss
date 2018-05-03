@@ -115,7 +115,9 @@
 
             &.has-hover {
                 &:hover {
-                    background: $c-border;
+                    box-shadow: 1px 2px 10px rgba(0,0,0,.1);
+                    transition: all .3s ease-in-out;
+                    z-index: 1;
                 }
             }
 
@@ -157,7 +159,7 @@
             transition: border .3s ease;
 
             &.selected {
-                border-color: $c-green;
+                border-color: $c-blue;
             }
 
             .asset-thumbnail {
@@ -189,7 +191,7 @@
                     }
 
                     &.active {
-                        color: $c-green;
+                        color: $c-blue;
                     }
                 }
 
@@ -233,7 +235,7 @@
                 font-weight: 600;
             }
 
-            .item-meta-right {
+            .item-meta-right, .item-meta-right a {
                 margin-left: auto;
                 color: $c-lightGray;
             }
@@ -281,29 +283,29 @@
                     border-radius: 0;
                     padding: 10px 15px;
                     margin: 0;
-                    background-color: rgba($c-moss, .1);
+                    background-color: rgba($c-lightGray, .1);
                     font-weight: 700;
                     font-size: 12px;
                     transition: all .3s ease;
 
                     &:hover {
-                        background-color: rgba($c-moss, .2);
+                        background-color: rgba($c-lightGray, .2);
 
                         .edit-group {
                             right: 8px;
                             
                             svg * {
-                                fill: $c-moss;
+                                fill: $c-lightGray;
                             }
                         }
                     }
 
                     &.sel {
-                        background-color: $c-moss;
+                        background-color: $c-lightGray;
                         color: $c-offWhite;
 
                         &:hover {
-                            background-color: $c-moss;
+                            background-color: $c-lightGray;
                             svg * {
                                 fill: $c-offWhite;
                             }

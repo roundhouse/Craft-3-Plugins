@@ -1,0 +1,65 @@
+{% import "form-builder/_includes/_components" as components %}
+
+{% set availableFields = form.fieldLayoutId is defined and form.fieldLayoutId ? craft.app.getFields.getLayoutById(form.fieldLayoutId).getFields() : null %}
+{% set allowedFields = craft.fbi.emails.getAllowedTextFields() %}
+{% set fieldsOption = [] %}
+{% set fieldsOption = [{'label': 'Select Field', 'value': ''}] %}
+{% for field in availableFields %}
+    {% if field|getClass(field) in allowedFields|keys %}
+        {% set fieldsOption = fieldsOption|merge([{ 'label': field.name, 'value': field.handle }]) %}
+    {% endif %}
+{% endfor %}
+
+{% set nameSelected = 'integrations[email]['~ index ~'][subject][selected]' %}
+{% set nameText = 'integrations[email]['~ index ~'][subject][text]' %}
+{% set nameField = 'integrations[email]['~ index ~'][subject][field]' %}
+
+{% set container = {
+    title: 'Subject' |t,
+    info: null,
+    icon: null,
+    toggle: false,
+    class: null,
+    id: null
+} %}
+
+{% set inputs = {
+    0: {
+        type: 'text',
+        name: nameText,
+        value: attribute(form.integrations.email, index).subject.text is defined and attribute(form.integrations.email, index).subject.text != '' ? attribute(form.integrations.email, index).subject.text : '',
+        class: 'hidden',
+        id: null,
+        hint: 'TEXT'
+    },
+    1: {
+        type: 'select',
+        name: nameField,
+        value: attribute(form.integrations.email, index).subject.field is defined and attribute(form.integrations.email, index).subject.field != '' ? attribute(form.integrations.email, index).subject.field : '',
+        options: fieldsOption |json_encode(),
+        class: 'hidden',
+        id: null,
+        hint: 'FIELD'
+    },
+    2: {
+        type: 'text',
+        name: nameSelected,
+        value: attribute(form.integrations.email, index).subject.selected is defined and attribute(form.integrations.email, index).subject.selected != '' ? attribute(form.integrations.email, index).subject.selected : '',
+        class: 'hidden',
+        id: null,
+        toggler: true
+    }
+} %}
+
+{% set modal = {
+    title: 'Custom Subject' |t,
+    instructions: 'Enter custom subject line or select a field that will be used for the custom subject line. You must toggle the label to turn it on.' |t,
+    successMessage: 'Custom Subject Updated' |t,
+    inputs: inputs
+} %}
+
+{{ components.optionItem(
+    container,
+    modal,
+    inputs
+) }}

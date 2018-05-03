@@ -17,7 +17,7 @@
         margin-bottom: 25px;
 
         .chart-explorer {
-            background-color: $c-moss;
+            background-color: white;
             height: 100%;
             padding-bottom: 80px;
             border-radius: $border-radius;
@@ -40,7 +40,7 @@
                 margin-left: auto;
 
                 .to {
-                    color: $c-border;
+                    color: $c-lightGray;
                 }
             }
         }
@@ -50,7 +50,7 @@
 
             input {
                 border: none;
-                color: $c-border;
+                color: $c-lightGray;
                 text-align: center;
             }
         }
@@ -67,11 +67,11 @@
             display: flex;
 
             font-size: 12px;
-            color: $c-white;
+            color: $c-lightGray;
             text-transform: uppercase;
 
             p {
-                color: $c-white !important;
+                color: $c-lightGray !important;
                 font-size: 500;
                 letter-spacing: .1em;
             }
@@ -97,37 +97,37 @@
             .y-value {
                 font-size: 18px;
                 font-weight: 800;
-                color: $c-green;
+                color: $c-blue;
             }
         }
 
         .grid-line .tick {
             line {
-                stroke: darken($c-moss, 2) !important;
+                stroke: darken($c-border, 2) !important;
             }
         }
 
         .tick {
             text { 
                 stroke: none !important; 
-                fill: $c-white !important;
+                fill: $c-lightGray !important;
             }
         }
 
         .axis path {
-            stroke: $c-moss !important;
+            stroke: $c-border !important;
         }
 
         .plots .plot {
-            fill: $c-success !important;
+            fill: $c-blue !important;
         }
 
         .chart-line path {
-            stroke: $c-success !important;
+            stroke: $c-blue !important;
         }
 
         .chart-area path {
-            fill: $c-success !important;
+            fill: $c-blue !important;
         }
     }
 

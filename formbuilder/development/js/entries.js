@@ -354,7 +354,7 @@ Garnish.$doc.ready(() => {
     $('#delete-entry').on('click', (e) => {
         let entryId = $(e.currentTarget).data('entry-id')
         let data = {
-            id: entryId
+            entryId: entryId
         }
 
         if (confirm(Craft.t("form-builder", "Deleting entry will remove all relevant assets and notes, are you sure?"))) {
@@ -363,7 +363,7 @@ Garnish.$doc.ready(() => {
                     Craft.cp.displayNotice(Craft.t('form-builder', 'Deleting entry...'))
 
                     setTimeout(function() { 
-                        window.location.href = `${window.FormBuilder.adminUrl}/entries`
+                        window.location.href = `${Craft.getCpUrl()}/form-builder/entries`
                     }, 2000)
 
                 }

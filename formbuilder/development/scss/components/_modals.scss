@@ -54,11 +54,11 @@
             transition: color .3s ease;
 
             &:hover {
-                color: $c-green;
+                color: $c-blue;
             }
 
             &.active {
-                color: $c-green;
+                color: $c-blue;
             }
         }
 
@@ -115,8 +115,8 @@
                 opacity: 1;
                 
                 .toggle-btn {
-                    background: $c-green;
-                    border: 2px solid $c-green;
+                    background: $c-blue;
+                    border: 2px solid $c-blue;
                 }
             }
         }

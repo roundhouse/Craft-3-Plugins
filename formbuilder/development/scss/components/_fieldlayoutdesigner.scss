@@ -93,20 +93,19 @@
     }
 
     &.not-available {
-        display: none;
-        // background: repeating-linear-gradient(
-        //   45deg,
-        //   #606dbc,
-        //   #606dbc 10px,
-        //   #465298 10px,
-        //   #465298 20px
-        // );
+        pointer-events: none;
+        &:after {
+            display: block;
+            content: "Field not available";
+            font-size: 10px;
+            color: rgba($c-gray, .6);
+        }
     }
 }
 
 %fld-insertion {
-    border: 2px dashed $c-green;
-    background-color: rgba($c-green, .1);
+    border: 2px dashed $c-blue;
+    background-color: rgba($c-blue, .1);
 
     .tabs, .tab, .fld-tabcontent {
         background: none;
@@ -119,7 +118,7 @@
 
     &:before {
         content: "";
-        background-color: $c-green;
+        background-color: $c-blue;
         width: 3px;
         height: 100%;
         position: absolute;

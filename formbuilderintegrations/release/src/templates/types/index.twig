@@ -1,0 +1,50 @@
+{% extends "formbuilder-integrations/layouts/_layout" %}
+{% import "_includes/forms" as forms %}
+
+{% set title = "Types"|t('formbuilder-integrations') %}
+
+{% set selectedSubnavItem = "types" %}
+{% set bodyClass = (bodyClass is defined ? bodyClass~' ' : '') ~ "integrations-types" %}
+
+{% set fullPageForm = true %}
+{#{% set saveShortcutRedirect = continueEditingUrl %}#}
+
+{% block content %}
+
+    <form id="main-form" method="post" accept-charset="UTF-8">
+        <input type="hidden" name="action" value="formbuilder-integrations/types/save">
+
+        {% if type.id %}
+            <input type="hidden" name="typeId" value="{{ type.id }}">
+        {% endif %}
+
+        {{ forms.textField({
+            label: "Title"|t('app'),
+            id: 'type-title',
+            name: 'title',
+            value: type.title,
+            errors: type.getErrors('title'),
+            first: true,
+            autofocus: true,
+            required: true,
+            maxlength: 255
+        }) }}
+
+        {{ forms.textField({
+            label: "Handle"|t('app'),
+            id: 'type-handle',
+            name: 'handle',
+            value: type.handle,
+            errors: type.getErrors('handle'),
+            required: true,
+            maxlength: 255
+        }) }}
+
+        <input type="submit" class="btn submit" value="{{ 'Save'|t('app') }}">
+
+    </form>
+{% endblock %}
+
+{% js %}
+    {% if type and not type.handle %}new Craft.HandleGenerator('#type-title', '#type-handle');{% endif %}
+{% endjs %}

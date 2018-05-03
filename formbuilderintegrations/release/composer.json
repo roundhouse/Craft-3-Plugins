@@ -1,0 +1,40 @@
+{
+    "name": "owldesign/form-builder-integrations",
+    "description": "Various 3rd party integrations for Form Builder plugin.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "form builder integrations",
+        "yii2"
+    ],
+    "support": {
+        "email": "vadim@owl-design.net",
+        "docs": "https://github.com/owldesign/form-builder-integrations/blob/master/README.md",
+        "issues": "https://github.com/owldesign/form-builder-integrations/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vadim Goncharov",
+            "homepage": "https://owl-design.net"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "owldesign\\formbuilderintegrations\\": "src/"
+        }
+    },
+    "extra": {
+        "handle": "formbuilder-integrations",
+        "name": "Form Builder Integrations",
+        "developer": "Vadim Goncharov",
+        "class": "owldesign\\formbuilderintegrations\\Integrations"
+    }
+}
