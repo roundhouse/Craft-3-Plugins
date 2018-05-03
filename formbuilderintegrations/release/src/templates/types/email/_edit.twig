@@ -5,7 +5,6 @@
 {% set selectedSubnavItem = "email" %}
 
 {% set details = true %}
-{% set showPreviewBtn = true %}
 
 {% block header %}
     {{ block('pageTitle') }}
@@ -39,22 +38,27 @@
     <div id="content-container">
         <div id="content">
             <div class="fields">
-                {% set fields = craft.fbi.emails.getFields() %}
+                <div>
+                    <div>
+                        {% set fields = craft.fbi.emails.getFields() %}
 
-                {% for field in fields %}
-                    {% set value = (integration.content[field.handle] is defined ? integration.content[field.handle] : '') %}
-                    {% set input = craft.fbi.emails.getInputHtml(value, field) %}
+                        {% for field in fields %}
+                            {% set value = (integration.content[field.handle] is defined ? integration.content[field.handle] : '') %}
+                            {% set input = craft.fbi.emails.getInputHtml(value, field) %}
 
-                    <div class="field">
-                        <div class="heading">
-                            <label for="">{{ field.label }}</label>
-                        </div>
-                        <div class="input">
-                            {{ input |raw }}
-                        </div>
+                            <div class="field" id="fields-{{ field.handle }}-field" data-type="craft\redactor\Field">
+                                <div class="heading">
+                                    <label for="">{{ field.label }}</label>
+                                </div>
+                                <div class="input">
+                                    {{ input |raw }}
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
                     </div>
-
-                {% endfor %}
+                </div>
             </div>
         </div>
     </div>

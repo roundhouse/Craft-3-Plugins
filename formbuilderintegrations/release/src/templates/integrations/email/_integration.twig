@@ -17,7 +17,7 @@
                 <a href="#" class="delete-btn">Remove</a>
             </span>
             <div class="integration-info">
-                <span class="integration-title">{{ integration.title }}</span>
+                <span class="integration-title">{{ integration.title }} <a href="{{ url(integration.getUrl(), { referrer: craft.app.request.pathInfo }) }}" class="edit"><i class="far fa-pencil"></i></a></span>
                 <div class="status-container">
                     {% if integration.status == 'enabled' %}
                         <div class="status on" title="Enabled"></div>

@@ -160,6 +160,31 @@
             text-align: left;
         }
     }
+
+    .form-details {
+        display: flex;
+        flex-direction: column;
+
+        & > div {
+            display: flex;
+        }
+
+        .group-info {
+            font-size: 10px;
+            color: $c-lightGray;
+
+            .group-icon {
+                margin-right: 7px;
+            }
+        }
+
+        .form-info {
+            .form-name {
+                font-size: 10px;
+                font-weight: 600;
+            }
+        }
+    }
 }
 
 // Entry

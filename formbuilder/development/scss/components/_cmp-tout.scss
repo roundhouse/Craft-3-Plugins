@@ -432,6 +432,16 @@
                 font-size: 12px;
             }
 
+            .edit {
+                font-size: 9px;
+                color: $c-lightGray;
+                padding-left: 5px;
+
+                &:hover {
+                    color: $c-blue;
+                }
+            }
+
             .integration-meta {
                 font-size: 12px;
                 color: $c-lightGray;

@@ -7,6 +7,10 @@
         justify-content: space-between;
         align-items: flex-start;
 
+        & > div {
+            margin-bottom: 25px;
+        }
+
         .full-col {
             display: flex;
             flex-direction: row;
@@ -17,6 +21,10 @@
 
         .wide-col {
             width: 68%;
+        }
+
+        .half-col {
+            width: 49%;
         }
 
         .short-col {
@@ -283,8 +291,9 @@
                     border-radius: 0;
                     padding: 10px 15px;
                     margin: 0;
+                    color: darken($c-lightGray, 15);
                     background-color: rgba($c-lightGray, .1);
-                    font-weight: 700;
+                    font-weight: 500;
                     font-size: 12px;
                     transition: all .3s ease;
 

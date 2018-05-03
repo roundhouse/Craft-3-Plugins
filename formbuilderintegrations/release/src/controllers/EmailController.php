@@ -81,14 +81,16 @@ class EmailController extends Controller
         $variables['saveShortcutRedirect'] = $variables['continueEditingUrl'];
 
         // Live Preview
+        // TODO: add live preview
+        $variables['showPreviewBtn'] = false;
         if (!Craft::$app->getRequest()->isMobileBrowser(true)) {
             $this->getView()->registerJs('Craft.LivePreview.init('.Json::encode([
-                    'fields' => '#integrations-body-copy, #integrations-footer-copy',
-                    'extraFields' => '',
+                    'fields' => '#fields > div > div .field',
+                    'extraFields' => '#settings',
                     'previewUrl' => $variables['integration']->getUrl(),
                     'previewAction' => 'formbuilder-integrations/email/preview-email-template',
                     'previewParams' => [
-                        'entryId' => $variables['integration']->id,
+                        'integrationId' => $variables['integration']->id,
                         'siteId' => $variables['integration']->siteId
                     ]
                 ]).');');
@@ -189,12 +191,12 @@ class EmailController extends Controller
             $integration = new Email();
         }
 
-        $integration->title     = Craft::$app->getRequest()->getBodyParam('title');
-        $integration->handle    = Craft::$app->getRequest()->getBodyParam('handle');
-        $integration->typeId    = $type->id;
-        $integration->enabled   = Craft::$app->getRequest()->getBodyParam('enabled');
-        $integration->content   = Craft::$app->getRequest()->getBodyParam('content');
-        $integration->settings  = Craft::$app->getRequest()->getBodyParam('settings');
+//        $integration->title     = Craft::$app->getRequest()->getBodyParam('title');
+//        $integration->handle    = Craft::$app->getRequest()->getBodyParam('handle');
+//        $integration->typeId    = $type->id;
+//        $integration->enabled   = Craft::$app->getRequest()->getBodyParam('enabled');
+//        $integration->content   = Craft::$app->getRequest()->getBodyParam('content');
+//        $integration->settings  = Craft::$app->getRequest()->getBodyParam('settings');
 
         return $integration;
     }
