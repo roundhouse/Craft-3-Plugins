@@ -178,7 +178,7 @@
                         td {
                             background-color: $c-info !important;
                             color: $c-white !important;
-                            a {
+                            a, span {
                                 color: $c-white !important;
                             }
                             svg * {
@@ -264,7 +264,6 @@
             }
         }
 
-
         .group-name {
             padding-left: 5px;
         }
@@ -280,13 +279,6 @@
                 }
             }
         }
-
-        //@include bp(max-width, $tablet) {
-        //    .elementindex .elements tbody tr:last-child td:first-child {
-        //        width: 100% !important;
-        //        text-align: center !important;
-        //    }
-        //}
     }
 
     // Collapsed
