@@ -133,6 +133,7 @@ class EmailController extends Controller
         $this->requireAdmin();
 
         $integration = $this->_getIntegrationModel();
+        $this->_populateIntegrationModel($integration);
 
         if (!Craft::$app->getElements()->saveElement($integration)) {
             Craft::$app->getSession()->setError(Integrations::t('Couldn’t save the integrations.'));
@@ -179,7 +180,6 @@ class EmailController extends Controller
     private function _getIntegrationModel(): Email
     {
         $integrationId = Craft::$app->getRequest()->getBodyParam('integrationId');
-        $type = Integrations::getInstance()->getTypes()->getTypeByHandle('email');
 
         if ($integrationId) {
             $integration = Integrations::getInstance()->getIntegrations()->getIntegrationById($integrationId);
@@ -190,13 +190,6 @@ class EmailController extends Controller
         } else {
             $integration = new Email();
         }
-
-//        $integration->title     = Craft::$app->getRequest()->getBodyParam('title');
-//        $integration->handle    = Craft::$app->getRequest()->getBodyParam('handle');
-//        $integration->typeId    = $type->id;
-//        $integration->enabled   = Craft::$app->getRequest()->getBodyParam('enabled');
-//        $integration->content   = Craft::$app->getRequest()->getBodyParam('content');
-//        $integration->settings  = Craft::$app->getRequest()->getBodyParam('settings');
 
         return $integration;
     }

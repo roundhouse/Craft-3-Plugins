@@ -45,7 +45,7 @@ class Email extends Model
      */
     public function __toString(): string
     {
-        return Integrations::t($this->title);
+        return $this->title;
     }
 
 

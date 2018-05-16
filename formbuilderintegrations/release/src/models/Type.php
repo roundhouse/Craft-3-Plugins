@@ -46,7 +46,7 @@ class Type extends Model
      */
     public function __toString(): string
     {
-        return Integrations::t($this->title);
+        return $this->title;
     }
 
     public function newUrl()

@@ -170,7 +170,7 @@ class Integration extends Element
 
             $sources[] = [
                 'key'       => $key,
-                'label'     => Integrations::t($type->title),
+                'label'     => $type->title,
                 'data'      => ['id' => $type->id],
                 'criteria'  => ['typeId' => $type->id]
             ];

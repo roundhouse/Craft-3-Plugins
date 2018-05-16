@@ -22,8 +22,9 @@
 {% endblock %}
 
 {% block main %}
+    {% set type = craft.fbi.getTypes().getTypeByHandle('email') %}
     <input type="hidden" name="action" value="formbuilder-integrations/email/save">
-    <input type="hidden" name="type" value="email">
+    <input type="hidden" name="typeId" value="{{ type.id }}">
 
     {% if redirect is defined and redirect %}
         {{ redirectInput(redirect) }}
